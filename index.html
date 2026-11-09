@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LoRA 图鉴 · 本地模型库</title>
+  <meta name="description" content="本地 LoRA 模型收藏索引：1,736 个模型、384.9 GB，覆盖 SD1.5、SDXL、FLUX 与其他开源系列。支持搜索、筛选、排序与详情查看，不存储、不传播模型文件。" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#2a241e" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" href="assets/logo-mark.png" type="image/png" />
+  <style>html[data-i18n-pending] body{visibility:hidden}</style>
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem("ebook-vault-lang");
+        var isEn = lang === "en";
+        document.documentElement.lang = isEn ? "en" : "zh-CN";
+        if (isEn) document.documentElement.setAttribute("data-i18n-pending", "1");
+        var saved = localStorage.getItem("ebook-vault-theme");
+        document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+      window.setTimeout(function () {
+        document.documentElement.removeAttribute("data-i18n-pending");
+      }, 2000);
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/style.css?v=20261108a" />
+</head>
+<body class="library-page">
+  <a class="skip-link" href="#grid" data-i18n="skip">跳到模型列表</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="书海拾贝">
+        <img class="brand-mark" src="assets/logo-mark.png" alt="" width="26" height="26" />
+        <span class="brand-text">
+          <span class="brand-name" data-i18n="brandShort">书海拾贝</span>
+        </span>
+      </a>
+      <nav class="header-nav" aria-label="主导航" data-i18n-aria="mainNavAria">
+        <a class="header-papers header-lora" href="index.html" aria-current="page" data-i18n-aria="loraAria" aria-label="LoRA 图鉴">LoRA</a>
+      </nav>
+      <div class="header-tools">
+        <div class="lang-switch" id="lang-switch" role="group" aria-label="语言" data-i18n-aria="langAria">
+          <button type="button" class="lang-btn" id="lang-toggle" data-lang="en" aria-label="Switch to English" title="Switch to English">EN</button>
+        </div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode" aria-pressed="false">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-well" id="search-well">
+    <div class="search" role="search">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <path d="m16.5 16.5 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+
+            <input id="q" class="search-input" type="search" inputmode="search"
+      placeholder="搜索模型名、文件名或触发词，例如 hanfu、pixel、Wan2.2"
+      data-i18n-placeholder="searchPlaceholder"
+      aria-label="搜索模型名、文件名、触发词、系列或风格"
+      data-i18n-aria="searchAria"
+      autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" />
+      <kbd class="kbd" aria-hidden="true">/</kbd>
+      <button type="button" class="search-clear" id="search-clear" aria-label="清空搜索" data-i18n-aria="clearSearch" hidden>✕</button>
+    </div>
+  </div>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-inner">
+      <h1 class="hero-title" id="hero-title"></h1>
+
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="filters" id="filters" aria-label="筛选与排序" data-i18n-aria="filtersAria">
+      <div class="filter-lead">
+        <p class="filter-lead-text" id="filter-lead-text">收录 1,736 个 LoRA</p>
+        <button type="button" class="btn filter-open" id="filter-open" aria-haspopup="dialog" aria-controls="filter-dialog" aria-expanded="false">
+          <span data-i18n="filterOpen">筛选</span><span class="filter-open-count" id="filter-open-count" hidden></span>
+        </button>
+      </div>
+      <div class="filter-body" id="filter-body">
+      <div class="filter-row" data-dimension="group">
+        <span class="filter-label" data-i18n="filterGroup">基础模型</span>
+        <div class="chips" id="chips-group" role="group" aria-label="按基础模型筛选" data-i18n-aria="filterGroupAria"></div>
+      </div>
+      <div class="filter-row" data-dimension="family">
+        <span class="filter-label" data-i18n="filterFamily">模型系列</span>
+        <div class="chips" id="chips-family" role="group" aria-label="按模型系列筛选" data-i18n-aria="filterFamilyAria"></div>
+      </div>
+      <div class="filter-row" data-dimension="style">
+        <span class="filter-label" data-i18n="filterStyle">风格</span>
+        <div class="chips" id="chips-style" role="group" aria-label="按风格筛选" data-i18n-aria="filterStyleAria"></div>
+      </div>
+      <div class="filter-row filter-row-sort">
+        <span class="filter-label" data-i18n="sortLabel">排序</span>
+        <div class="segmented" id="sort" role="group" aria-label="排序方式" data-i18n-aria="sortAria">
+          <button type="button" data-sort="size" class="is-active" data-i18n="sortSize">体积</button>
+          <button type="button" data-sort="name" data-i18n="sortName">名称</button>
+          <button type="button" data-sort="clicks" data-i18n="sortHot">热门</button>
+        </div>
+        <button type="button" class="btn ghost filter-reset" id="filter-reset" data-i18n="clearFilters" hidden>清空筛选</button>
+      </div>
+      </div>
+    </section>
+
+    <section class="content" aria-label="模型列表" data-i18n-aria="contentAria">
+      <div class="toolbar">
+        <p class="count" id="result-count" aria-live="polite">正在载入…</p>
+        <div class="toolbar-actions">
+          <button type="button" class="btn ghost" id="random-pick" data-i18n="random">随机看看</button>
+        </div>
+      </div>
+
+      <div class="active-filters" id="active-filters" hidden></div>
+
+      <div class="loading" id="loading">
+        <span class="loading-spine" aria-hidden="true"></span>
+        <span data-i18n="loading">正在载入模型索引…</span>
+      </div>
+
+      <div class="grid" id="grid" tabindex="-1"></div>
+
+      <div class="empty" id="empty" hidden>
+        <span class="empty-spine" aria-hidden="true"></span>
+        <p class="empty-title" data-i18n="emptyTitle">没有匹配的模型</p>
+        <p class="empty-hint" data-i18n="emptyHint">换个关键词，或者清空筛选再试。</p>
+        <button type="button" class="btn primary" id="empty-reset" data-i18n="emptyReset">清空搜索与筛选</button>
+      </div>
+
+      <div class="load-more-wrap">
+        <button type="button" class="btn primary load-more" id="load-more" hidden></button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-notice">
+        <span data-i18n="footerNoticeLead">本站发布的内容若侵犯到您的权益，</span><span data-i18n="footerContact">请联系我们</span><span data-i18n="footerNoticeTail">，我们将及时处理！</span>
+      </p>
+      <p class="footer-notice" data-i18n="footerCrawler">以上内容由网络爬虫自动抓取，以非人工方式自动生成。书海拾贝不储存、复制、传播任何文件。</p>
+    </div>
+  </footer>
+
+  <button type="button" class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部" data-i18n-aria="toTop" data-i18n-title="toTop" hidden>↑</button>
+
+  <dialog class="filter-dialog" id="filter-dialog" aria-labelledby="filter-dialog-title">
+    <div class="filter-dialog-panel">
+      <button type="button" class="dialog-close" id="filter-dialog-close" aria-label="关闭筛选" data-i18n-aria="closeFilters">✕</button>
+      <h2 class="filter-dialog-title" id="filter-dialog-title" data-i18n="filterDialogTitle">筛选</h2>
+      <div class="filter-dialog-body" id="filter-dialog-body"></div>
+      <div class="filter-dialog-actions">
+        <button type="button" class="btn primary" id="filter-dialog-done" data-i18n="filterDone">完成</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="model-dialog" id="model-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-shell">
+      <button type="button" class="dialog-close" id="dialog-close" aria-label="关闭详情" data-i18n-aria="closeDialog">✕</button>
+      <div class="dialog-body">
+        <h2 class="dialog-title" id="dialog-title"></h2>
+        <dl class="dialog-meta" id="dialog-meta"></dl>
+        <div class="dialog-section" id="dialog-keywords-wrap" hidden>
+          <p class="dialog-label" data-i18n="keywordsLabel">触发词 / 关键词</p>
+          <div class="dialog-keywords" id="dialog-keywords"></div>
+        </div>
+        <div class="dialog-actions" id="dialog-links">
+          <div class="dl-link" id="ct-link" hidden>
+            <div class="dl-link-info">
+              <span class="dl-link-name" data-i18n="ctSource">城通网盘</span>
+              <span class="dl-link-code" id="ct-code-text"></span>
+            </div>
+            <div class="dl-link-actions">
+              <a class="btn primary" id="ct-download" target="_blank" rel="noopener noreferrer" data-i18n="modalOpen">打开下载页</a>
+              <button type="button" class="btn copy" id="copy-ctcode" data-i18n="modalCopy">复制链接</button>
+            </div>
+          </div>
+          <div class="dl-link" id="quark-link" hidden>
+            <div class="dl-link-info">
+              <span class="dl-link-name" data-i18n="quarkSource">夸克网盘</span>
+              <span class="dl-link-code" id="quark-code-text"></span>
+            </div>
+            <div class="dl-link-actions">
+              <a class="btn primary" id="quark-download" target="_blank" rel="noopener noreferrer" data-i18n="modalOpen">打开下载页</a>
+              <button type="button" class="btn copy" id="copy-quarkcode" data-i18n="modalCopy">复制链接</button>
+            </div>
+          </div>
+        </div>
+        <p class="dialog-status" id="dialog-status" role="status" aria-live="polite" hidden></p>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <noscript>
+    <div class="noscript" data-i18n="noscript">本站的搜索与筛选依赖 JavaScript，请在浏览器中启用 JavaScript 后刷新页面。</div>
+  </noscript>
+
+  <script src="data/lora.js"></script>
+  <script src="assets/app.js?v=20261107f"></script>
+<script>
+/* 支持 ?q=关键词 深链：进入页面后自动执行该页自己的搜索 */
+(function(){
+  var q="";
+  try{ q=(new URLSearchParams(location.search).get("q")||"").trim(); }catch(e){}
+  if(!q) return;
+  var tries=0;
+  function run(){
+    var el=document.getElementById("q");
+    if(!el){ if(++tries<30) return setTimeout(run,120); return; }
+    if(el.value!==q) el.value=q;
+    el.dispatchEvent(new Event("input",{bubbles:true}));
+    el.dispatchEvent(new Event("search",{bubbles:true}));
+    if(++tries<6) setTimeout(run,220);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
+})();
+</script>
+<script src="assets/nav-scroll.js" defer></script>
+</body>
+</html>
